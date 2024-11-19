@@ -13,3 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+# API Configuration
+app/src/main/assets/config.properties
