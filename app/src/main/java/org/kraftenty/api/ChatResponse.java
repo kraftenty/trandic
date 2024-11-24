@@ -30,44 +30,6 @@ public class ChatResponse {
         return "";
     }
 
-    public List<String> getEnglishWords() {
-        if (choices != null && !choices.isEmpty()) {
-            try {
-                String content = choices.get(0).getMessage().getContent();
-                JsonObject jsonObject = gson.fromJson(content, JsonObject.class);
-                JsonArray enArray = jsonObject.getAsJsonArray("en");
-                List<String> result = new ArrayList<>();
-                for (int i = 0; i < enArray.size(); i++) {
-                    result.add(enArray.get(i).getAsString());
-                }
-                return result;
-            } catch (Exception e) {
-                Log.e("ChatResponse", "Error parsing English words: " + e.getMessage());
-                return Collections.emptyList();
-            }
-        }
-        return Collections.emptyList();
-    }
-
-    public List<String> getKoreanWords() {
-        if (choices != null && !choices.isEmpty()) {
-            try {
-                String content = choices.get(0).getMessage().getContent();
-                JsonObject jsonObject = gson.fromJson(content, JsonObject.class);
-                JsonArray krArray = jsonObject.getAsJsonArray("kr");
-                List<String> result = new ArrayList<>();
-                for (int i = 0; i < krArray.size(); i++) {
-                    result.add(krArray.get(i).getAsString());
-                }
-                return result;
-            } catch (Exception e) {
-                Log.e("ChatResponse", "Error parsing Korean words: " + e.getMessage());
-                return Collections.emptyList();
-            }
-        }
-        return Collections.emptyList();
-    }
-
     public List<WordPair> getWordPairs() {
         if (choices != null && !choices.isEmpty()) {
             try {
