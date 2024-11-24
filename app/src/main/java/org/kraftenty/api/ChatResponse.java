@@ -35,14 +35,14 @@ public class ChatResponse {
             try {
                 String content = choices.get(0).getMessage().getContent();
                 JsonObject jsonObject = gson.fromJson(content, JsonObject.class);
-                JsonArray krArray = jsonObject.getAsJsonArray("kr");
                 JsonArray enArray = jsonObject.getAsJsonArray("en");
+                JsonArray krArray = jsonObject.getAsJsonArray("kr");
                 List<WordPair> result = new ArrayList<>();
-                
+
                 for (int i = 0; i < krArray.size(); i++) {
                     result.add(new WordPair(
-                        krArray.get(i).getAsString(),
-                        enArray.get(i).getAsString()
+                            enArray.get(i).getAsString(),
+                            krArray.get(i).getAsString()
                     ));
                 }
                 return result;

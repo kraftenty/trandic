@@ -9,6 +9,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
@@ -44,9 +47,23 @@ public class RegisterActivity extends AppCompatActivity {
             firebaseAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
-                            Toast.makeText(this, "Register Success!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(this, MainActivity.class));
-                            finish();
+                            // 가입할때 유저별 단어장 만드는 부분
+                            // Firestore 초기화
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            
+                            // users 컬렉션에 빈 문서 생성
+                            db.collection("users").document(userId)
+                                .set(new HashMap<>())
+                                .addOnSuccessListener(aVoid -> {
+                                    Toast.makeText(this, "Register Success!", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(this, MainActivity.class));
+                                    finish();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(this, "Failed to create user document: " + e.getMessage(),
+                                            Toast.LENGTH_SHORT).show();
+                                });
                         } else {
                             Toast.makeText(this, "Register Failed: " + task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();

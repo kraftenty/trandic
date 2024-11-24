@@ -1,6 +1,7 @@
 package org.kraftenty.ui.translate;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,12 @@ import com.google.android.material.chip.ChipGroup;
 
 import org.kraftenty.api.WordPair;
 import org.kraftenty.databinding.FragmentTranslateBinding;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class TranslateFragment extends Fragment {
 
@@ -49,9 +56,32 @@ public class TranslateFragment extends Fragment {
             wordButtonContainer.removeAllViews();
             for (WordPair pair : pairs) {
                 Chip chip = new Chip(requireContext());
-                chip.setText(pair.getKorean() + "  " + pair.getEnglish());
+                chip.setText(pair.getEnglish() + "  " + pair.getKorean());
                 chip.setClickable(true);
                 chip.setCheckable(false);
+                
+                chip.setOnClickListener(v -> {
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    
+                    Map<String, Object> word = new HashMap<>();
+                    Log.d("TranslateFragment", "Pair.english: " + pair.getEnglish());
+                    Log.d("TranslateFragment", "Pair.korean: " + pair.getKorean());
+                    word.put("en", pair.getEnglish());
+                    word.put("kr", pair.getKorean());
+
+                    db.collection("users")
+                        .document(userId)
+                        .collection("words")
+                        .document(pair.getEnglish())  // 영단어를 문서 ID로 사용
+                        .set(word)
+                        .addOnSuccessListener(aVoid -> 
+                            Toast.makeText(requireContext(), pair.getEnglish() + " added to words", Toast.LENGTH_SHORT).show())
+                        .addOnFailureListener(e -> 
+                            Toast.makeText(requireContext(), "Failed to add word: " + e.getMessage(), 
+                                Toast.LENGTH_SHORT).show());
+                });
+                
                 wordButtonContainer.addView(chip);
             }
         });
