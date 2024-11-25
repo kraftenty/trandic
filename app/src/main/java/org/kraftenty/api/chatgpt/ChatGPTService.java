@@ -1,4 +1,4 @@
-package org.kraftenty.api;
+package org.kraftenty.api.chatgpt;
 
 import retrofit2.Call;
 import retrofit2.http.*;

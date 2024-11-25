@@ -17,11 +17,19 @@ public class ApiConfig {
         }
     }
 
-    public static String getApiKey() {
-        return properties.getProperty("API_KEY");
+    public static String getChatGptApiKey() {
+        return properties.getProperty("CHATGPT_API_KEY");
     }
 
-    public static String getBaseUrl() {
-        return properties.getProperty("BASE_URL");
+    public static String getChatGptBaseUrl() {
+        return properties.getProperty("CHATGPT_BASE_URL");
+    }
+
+    public static String getUnsplashClientId() {
+        return properties.getProperty("UNSPLASH_CLIENT_ID");
+    }
+
+    public static String getUnsplashBaseUrl() {
+        return properties.getProperty("UNSPLASH_BASE_URL");
     }
 } 

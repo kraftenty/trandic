@@ -5,11 +5,11 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import org.kraftenty.api.ChatGPTService;
-import org.kraftenty.api.ChatRequest;
-import org.kraftenty.api.ChatResponse;
+import org.kraftenty.api.chatgpt.ChatGPTService;
+import org.kraftenty.api.chatgpt.ChatRequest;
+import org.kraftenty.api.chatgpt.ChatResponse;
 import org.kraftenty.config.ApiConfig;
-import org.kraftenty.api.WordPair;
+import org.kraftenty.api.chatgpt.WordPair;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,7 +31,7 @@ public class TranslateViewModel extends AndroidViewModel {
         ApiConfig.init(application);
         
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ApiConfig.getBaseUrl())
+                .baseUrl(ApiConfig.getChatGptBaseUrl())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         
@@ -42,7 +42,7 @@ public class TranslateViewModel extends AndroidViewModel {
         isLoading.setValue(true);
         
         ChatRequest request = new ChatRequest(text);
-        service.translate("Bearer " + ApiConfig.getApiKey(), request)
+        service.translate("Bearer " + ApiConfig.getChatGptApiKey(), request)
                 .enqueue(new Callback<ChatResponse>() {
                     @Override
                     public void onResponse(Call<ChatResponse> call, Response<ChatResponse> response) {

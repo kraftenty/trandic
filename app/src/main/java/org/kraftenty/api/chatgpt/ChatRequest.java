@@ -1,4 +1,4 @@
-package org.kraftenty.api;
+package org.kraftenty.api.chatgpt;
 
 import java.util.ArrayList;
 import java.util.List;

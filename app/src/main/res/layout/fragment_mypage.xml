@@ -37,7 +37,7 @@
         app:layout_constraintTop_toBottomOf="@id/userEmail" />
 
     <Button
-        android:id="@+id/resetWordsButton"
+        android:id="@+id/resetWordsListButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -52,7 +52,7 @@
         android:layout_marginTop="8dp"
         android:text="Logout"
         android:backgroundTint="@android:color/darker_gray"
-        app:layout_constraintTop_toBottomOf="@id/resetWordsButton" />
+        app:layout_constraintTop_toBottomOf="@id/resetWordsListButton" />
 
     <Button
         android:id="@+id/deleteAccountButton"

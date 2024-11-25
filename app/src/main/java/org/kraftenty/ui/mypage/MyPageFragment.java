@@ -18,9 +18,13 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.WriteBatch;
 
 import org.kraftenty.ChangePasswordActivity;
 import org.kraftenty.LoginActivity;
+import org.kraftenty.MainActivity;
 import org.kraftenty.R;
 import org.kraftenty.databinding.FragmentMypageBinding;
 
@@ -100,6 +104,33 @@ public class MyPageFragment extends Fragment {
                 })
                 .setNegativeButton("No", null)
                 .show();
+        });
+
+        binding.resetWordsListButton.setOnClickListener(v -> {
+            new AlertDialog.Builder(requireContext())
+                    .setTitle("Reset Word List")
+                    .setMessage("All words will be deleted. Continue?")
+                    .setPositiveButton("Confirm", (dialog, which) -> {
+                        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        FirebaseFirestore.getInstance()
+                                .collection("users")
+                                .document(userId)
+                                .collection("words")
+                                .get()
+                                .addOnSuccessListener(queryDocumentSnapshots -> {
+                                    WriteBatch batch = FirebaseFirestore.getInstance().batch();
+                                    for (DocumentSnapshot document : queryDocumentSnapshots) {
+                                        batch.delete(document.getReference());
+                                    }
+                                    batch.commit().addOnSuccessListener(aVoid -> {
+                                        Toast.makeText(requireContext(), "Word list has been reset.", Toast.LENGTH_SHORT).show();
+                                        ((MainActivity) requireActivity()).getWordsViewModel().resetAndReload();
+                                    }).addOnFailureListener(e -> 
+                                        Toast.makeText(requireContext(), "Initialization failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                                });
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
         });
 
         return root;

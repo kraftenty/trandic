@@ -1,4 +1,4 @@
-package org.kraftenty.api;
+package org.kraftenty.api.chatgpt;
 
 import android.util.Log;
 

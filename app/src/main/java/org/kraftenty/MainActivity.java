@@ -7,18 +7,21 @@ import android.util.Log;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import org.kraftenty.databinding.ActivityMainBinding;
+import org.kraftenty.ui.words.WordsViewModel;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private WordsViewModel wordsViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
                     // 유효한 사용자인 경우 메인 화면 표시
                     binding = ActivityMainBinding.inflate(getLayoutInflater());
                     setContentView(binding.getRoot());
+
+                    wordsViewModel = new ViewModelProvider(this).get(WordsViewModel.class);
 
                     BottomNavigationView navView = findViewById(R.id.nav_view);
                     AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -51,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
+    }
+
+    public WordsViewModel getWordsViewModel() {
+        return wordsViewModel;
     }
 
 }

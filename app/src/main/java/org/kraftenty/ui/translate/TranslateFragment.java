@@ -18,7 +18,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
-import org.kraftenty.api.WordPair;
+import org.kraftenty.MainActivity;
+import org.kraftenty.api.chatgpt.WordPair;
 import org.kraftenty.databinding.FragmentTranslateBinding;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,10 +28,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.speech.tts.TextToSpeech;
+import java.util.Locale;
+
 public class TranslateFragment extends Fragment {
 
     private FragmentTranslateBinding binding;
     private TranslateViewModel translateViewModel;
+    private TextToSpeech tts;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,8 +80,10 @@ public class TranslateFragment extends Fragment {
                         .collection("words")
                         .document(pair.getEnglish())  // 영단어를 문서 ID로 사용
                         .set(word)
-                        .addOnSuccessListener(aVoid -> 
-                            Toast.makeText(requireContext(), pair.getEnglish() + " added to words", Toast.LENGTH_SHORT).show())
+                        .addOnSuccessListener(aVoid -> {
+                            Toast.makeText(requireContext(), pair.getEnglish() + " added to words", Toast.LENGTH_SHORT).show();
+                            ((MainActivity) requireActivity()).getWordsViewModel().resetAndReload();
+                        })
                         .addOnFailureListener(e -> 
                             Toast.makeText(requireContext(), "Failed to add word: " + e.getMessage(), 
                                 Toast.LENGTH_SHORT).show());
@@ -95,11 +102,30 @@ public class TranslateFragment extends Fragment {
             translateViewModel.translate(text);
         });
 
+        // TTS 초기화
+        tts = new TextToSpeech(requireContext(), status -> {
+            if (status == TextToSpeech.SUCCESS) {
+                tts.setLanguage(Locale.KOREAN);
+            }
+        });
+
+        // Speech 버튼 설정
+        binding.speakButton.setOnClickListener(v -> {
+            String translatedTextString = binding.translatedText.getText().toString();
+            if (!translatedTextString.isEmpty()) {
+                tts.speak(translatedTextString, TextToSpeech.QUEUE_FLUSH, null, null);
+            }
+        });
+
         return root;
     }
 
     @Override
     public void onDestroyView() {
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
         super.onDestroyView();
         binding = null;
     }
