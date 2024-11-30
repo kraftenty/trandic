@@ -2,5 +2,6 @@
     <string name="app_name">TranDic</string>
     <string name="title_translate">Translate</string>
     <string name="title_words">Words</string>
+    <string name="title_chat">Chat</string>
     <string name="title_mypage">My Page</string>
 </resources>

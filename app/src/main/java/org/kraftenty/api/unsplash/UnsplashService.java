@@ -4,7 +4,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface UnsplashApi {
+public interface UnsplashService {
     @GET("search/photos")
     Call<UnsplashResponse> searchPhotos(
         @Query("client_id") String clientId,

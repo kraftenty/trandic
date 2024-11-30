@@ -3,17 +3,22 @@
 
     <item
         android:id="@+id/navigation_translate"
-        android:icon="@drawable/ic_translate_black_24dp"
-        android:title="@string/title_translate" />
+        android:icon="@drawable/ic_translate"
+        android:title="Translate" />
 
     <item
         android:id="@+id/navigation_words"
-        android:icon="@drawable/ic_book_black_24dp"
-        android:title="@string/title_words" />
+        android:icon="@drawable/ic_words"
+        android:title="Words" />
+
+    <item
+        android:id="@+id/navigation_chat"
+        android:icon="@drawable/ic_chat"
+        android:title="Chat" />
 
     <item
         android:id="@+id/navigation_mypage"
-        android:icon="@drawable/ic_person_black_24dp"
-        android:title="@string/title_mypage" />
+        android:icon="@drawable/ic_mypage"
+        android:title="MyPage" />
 
 </menu>

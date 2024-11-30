@@ -18,6 +18,12 @@
         tools:layout="@layout/fragment_words" />
 
     <fragment
+        android:id="@+id/navigation_chat"
+        android:name="org.kraftenty.ui.chat.ChatFragment"
+        android:label="Chat"
+        tools:layout="@layout/fragment_chat" />
+
+    <fragment
         android:id="@+id/navigation_mypage"
         android:name="org.kraftenty.ui.mypage.MyPageFragment"
         android:label="@string/title_mypage"

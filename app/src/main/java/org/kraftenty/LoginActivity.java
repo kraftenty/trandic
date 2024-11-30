@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
             String password = passwordEditText.getText().toString();
             
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "이메일과 비밀번호를 입력해주세요", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Please input email and password.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
                             startActivity(new Intent(this, MainActivity.class));
                             finish();
                         } else {
-                            Toast.makeText(this, "로그인 실패: " + task.getException().getMessage(),
+                            Toast.makeText(this, "Login failed: " + task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                         }
                     });

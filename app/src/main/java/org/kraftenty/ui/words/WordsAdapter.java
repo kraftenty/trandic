@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide;
 
 import org.kraftenty.R;
 import org.kraftenty.api.chatgpt.WordPair;
-import org.kraftenty.api.unsplash.UnsplashApi;
+import org.kraftenty.api.unsplash.UnsplashService;
 import org.kraftenty.api.unsplash.UnsplashResponse;
 import org.kraftenty.config.ApiConfig;
 
@@ -36,7 +36,7 @@ public class WordsAdapter extends ListAdapter<WordPair, WordsAdapter.WordViewHol
             .baseUrl(ApiConfig.getUnsplashBaseUrl())
             .addConverterFactory(GsonConverterFactory.create())
             .build();
-    private static final UnsplashApi unsplashApi = retrofit.create(UnsplashApi.class);
+    private static final UnsplashService UNSPLASH_SERVICE = retrofit.create(UnsplashService.class);
     private TextToSpeech tts;
 
     protected WordsAdapter(Context context) {
@@ -96,7 +96,7 @@ public class WordsAdapter extends ListAdapter<WordPair, WordsAdapter.WordViewHol
             englishText.setText(word.getEnglish());
             koreanText.setText(word.getKorean());
 
-            unsplashApi.searchPhotos(CLIENT_ID, word.getEnglish(), 1)
+            UNSPLASH_SERVICE.searchPhotos(CLIENT_ID, word.getEnglish(), 1)
                     .enqueue(new Callback<UnsplashResponse>() {
                         @Override
                         public void onResponse(Call<UnsplashResponse> call, Response<UnsplashResponse> response) {
